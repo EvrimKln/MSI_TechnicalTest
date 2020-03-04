@@ -15,15 +15,15 @@ using Xunit;
 
 namespace ValuationTest
 {
-    public class ValuatorTests
+    public class ValuationTests
     {
-        public readonly IValuator _valuator;
+        public readonly ICalculator _calculator;
         public readonly ApiContext _context;
 
-        public ValuatorTests()
+        public ValuationTests()
         {
             var services = new ServiceCollection();
-            services.AddTransient<IValuator, DefaultValuator>();
+            services.AddTransient<ICalculator, DefaultCalculator>();
             services.AddDbContext<ApiContext>(opt => opt.UseInMemoryDatabase("Msi"));
             services.AddControllers();
             services.AddScoped<ApiContext>();
@@ -31,7 +31,7 @@ namespace ValuationTest
 
             var serviceProvider = services.BuildServiceProvider();
 
-            _valuator = serviceProvider.GetService<IValuator>();
+            _calculator = serviceProvider.GetService<ICalculator>();
 
             _context = serviceProvider.GetRequiredService<ApiContext>();
 
@@ -49,7 +49,7 @@ namespace ValuationTest
         }
 
         [Fact]
-        public void Valuate_Test()
+        public void CalculateValuation_Test()
         {
             DryBulkValuation dryBulkValuation = new DryBulkValuation();
             
@@ -57,7 +57,7 @@ namespace ValuationTest
             Assert.Equal(1, vessel.Id);
             List<TimeSeries> timeSeries = new List<TimeSeries>();
             timeSeries = _context.TimeSeries.Where(t => t.IsActive && t.VesselTypeId == vessel.VesselTypeId).ToList();
-            List<Valuation> list = _valuator.Valuate(vessel, timeSeries);
+            List<Valuation> list = _calculator.CalculateValuation(vessel, timeSeries);
             
             Assert.Equal(timeSeries.Count(), list.Count());
 
@@ -68,15 +68,15 @@ namespace ValuationTest
         }
 
         [Fact]
-        public void ValuationController_Valuate_Test()
+        public void ValuationController_Calculate_Test()
         {
             var mockRepo = new Mock<ApiContext>();
-            var mockVal = new Mock<IValuator>();
+            var mockVal = new Mock<ICalculator>();
 
-            var controller = new ValuationController(_context, _valuator);
+            var controller = new ValuationController(_context, _calculator);
 
             List<int> vesselImoNumbers = new List<int> { 1, 2 };
-            var result = controller.ValuateVessels(vesselImoNumbers);
+            var result = controller.CalculateValuations(vesselImoNumbers);
                         
             Assert.Equal(result.Count(), vesselImoNumbers.Count*3);
         }

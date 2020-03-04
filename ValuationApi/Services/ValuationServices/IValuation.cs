@@ -9,6 +9,6 @@ namespace ValuationApi.Services.ValuationServices
     public interface IValuation
     {
         bool IsMatch(Vessel item);
-        List<Valuation> Valuate(Vessel item, IEnumerable<TimeSeries> timeSeries);
+        List<Valuation> CalculateValuation(Vessel item, IEnumerable<TimeSeries> timeSeries);
     }
 }

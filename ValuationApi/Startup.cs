@@ -34,7 +34,7 @@ namespace ValuationApi
             services.AddControllers();
             services.AddScoped<ApiContext>();
             services.AddScoped<SeedData>();
-            services.AddScoped<IValuator, DefaultValuator>();
+            services.AddScoped<ICalculator, DefaultCalculator>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
 

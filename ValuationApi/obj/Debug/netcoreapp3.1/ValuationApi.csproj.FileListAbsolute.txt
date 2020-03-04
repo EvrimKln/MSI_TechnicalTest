@@ -152,4 +152,3 @@ D:\Projects\MSIValuation\ValuationApi\obj\Debug\netcoreapp3.1\ValuationApi.Razor
 D:\Projects\MSIValuation\ValuationApi\obj\Debug\netcoreapp3.1\ValuationApi.csproj.CopyComplete
 D:\Projects\MSIValuation\ValuationApi\obj\Debug\netcoreapp3.1\ValuationApi.dll
 D:\Projects\MSIValuation\ValuationApi\obj\Debug\netcoreapp3.1\ValuationApi.pdb
-D:\Projects\MSIValuation\ValuationApi\obj\Debug\netcoreapp3.1\ValuationApi.csprojAssemblyReference.cache

@@ -27,7 +27,7 @@ namespace ValuationApi.Services.ValuationServices
             return vessel.VesselTypeId.Equals(OIL_TANKER_TYPE);
         }
 
-        public List<Valuation> Valuate(Vessel vessel, IEnumerable<TimeSeries> timeSeries)
+        public List<Valuation> CalculateValuation(Vessel vessel, IEnumerable<TimeSeries> timeSeries)
         {
             try
             {

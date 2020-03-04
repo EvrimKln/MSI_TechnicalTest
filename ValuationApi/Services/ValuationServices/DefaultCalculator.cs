@@ -6,11 +6,11 @@ using ValuationApi.Model;
 
 namespace ValuationApi.Services.ValuationServices
 {
-    public class DefaultValuator : IValuator
+    public class DefaultCalculator : ICalculator
     {        
         private readonly List<IValuation> _valuations;
 
-        public DefaultValuator()
+        public DefaultCalculator()
         {
             //in the future, if we have another valuation for a new vessel type, 
             //we just need to create a new class for valuation and add here
@@ -21,10 +21,10 @@ namespace ValuationApi.Services.ValuationServices
             _valuations.Add(new ContainershipValuation());
         }
 
-        public List<Valuation> Valuate(Vessel vessel, IEnumerable<TimeSeries> timeSeries)
+        public List<Valuation> CalculateValuation(Vessel vessel, IEnumerable<TimeSeries> timeSeries)
         {
             var vVesselType = _valuations.First(r => r.IsMatch(vessel));
-            return vVesselType.Valuate(vessel, timeSeries);
+            return vVesselType.CalculateValuation(vessel, timeSeries);
         }
     }
 }

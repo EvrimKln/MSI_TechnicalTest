@@ -28,7 +28,7 @@ namespace ValuationApi.Services.ValuationServices
             return vessel.VesselTypeId.Equals(DRY_BULK_TYPE);
         }
 
-        public List<Valuation> Valuate(Vessel vessel, IEnumerable<TimeSeries> timeSeries)
+        public List<Valuation> CalculateValuation(Vessel vessel, IEnumerable<TimeSeries> timeSeries)
         {
             try
             {

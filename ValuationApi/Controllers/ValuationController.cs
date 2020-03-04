@@ -18,19 +18,19 @@ namespace ValuationApi.Controllers
         private VesselService vesselService;
         private ValuationService valuationService;       
         private readonly ApiContext _context;
-        private readonly IValuator _valuator;
+        private readonly ICalculator _calculator;
 
-        public ValuationController(ApiContext context, IValuator valuator)
+        public ValuationController(ApiContext context, ICalculator calculator)
         {
-            _valuator = valuator;
+            _calculator = calculator;
             _context = context;
             vesselService = new VesselService(context);
             valuationService = new ValuationService(context);            
         }
 
         [HttpPost]
-        [Route("valuate")]
-        public IEnumerable<Valuation> ValuateVessels(List<int> vesselImoNumbers)
+        [Route("calculatevaluation")]
+        public IEnumerable<Valuation> CalculateValuations(List<int> vesselImoNumbers)
         {
             try
             {
@@ -40,13 +40,13 @@ namespace ValuationApi.Controllers
                 {
                     Vessel vessel = vesselService.GetByImoNumber(vesselImoNumber);
 
-                    //////Valuate if the vessel has no valuation
-                    //////Valuate again if the vessel has valuation but is valuated in previous years. 
-                    //  //Since the age of vessel changed,it is more healthy to valuate again.
+                    //////CalculateValuation if the vessel has no valuation
+                    //////CalculateValuation again if the vessel has valuation but is calculated in previous years. 
+                    //  //Since the age of vessel changed,it is more healthy to calculate again.
 
-                    //////Valuate again if the vessel has valuation but one of the property of the vessel(like size) is changed and 
+                    //////CalculateValuation again if the vessel has valuation but one of the property of the vessel(like size) is changed and 
                     //  //it affects the valuation. I assume that vessel model just contains informations for valuation, 
-                    //  //so that i just checked the update date to valuate again or not.
+                    //  //so that i just checked the update date to calculate again or not.
                     //  //But normally vessel model probably contains a lot of properties apart from these. 
                     //  //So i would design a log to follow the changes about necessary properties and check this log to decide.
                     //  //Or i would define a few trigger for changes and this trigger invoke a job which do valuation, 
@@ -57,13 +57,13 @@ namespace ValuationApi.Controllers
                     //Normally we can control with this statement --> vessel.Valuation.Any() in relational database
                     if ((existingValuations == null || !existingValuations.Any()) || (existingValuations.FirstOrDefault().CreationDate.Year != DateTime.Today.Year)
                         || (existingValuations.FirstOrDefault().CreationDate > vessel.UpdateDate))
-                    {                       
-                        //// valuation changes depond on vessel type, i avoid to do if block which valuate according to vessel type
-                        //// i have classses inherited base abstract class for each vessel type
+                    {
+                        //// valuation changes depand on vessel type, i avoid to do if block which calculate according to vessel type
+                        //// i have inherited classes for each vessel type
                         //// Each class responsible its valuation, formule
-      
+
                         IEnumerable<TimeSeries> timeSeries = _context.TimeSeries.Where(t => t.VesselTypeId == vessel.VesselTypeId);
-                        List<Valuation> allValuations = _valuator.Valuate(vessel, timeSeries);
+                        List<Valuation> allValuations = _calculator.CalculateValuation(vessel, timeSeries);
                         foreach (var item in allValuations)
                         {
                             valuationService.Create(item);
@@ -72,7 +72,7 @@ namespace ValuationApi.Controllers
                 };
                 Vessel vesseldd = vesselService.GetByImoNumber(1);
 
-                // After we valuate for the vessels which need to be valuated, we can get vessels and its valuations
+                // After we calculate valuations for the vessels which need to be calculated, we can get vessels and its valuations
                 // isActive control is added in case the vessel may be deleted by other users meanwhile the process
                 return valuationService.Get().Where(v => vesselImoNumbers.Contains(v.ImoNumber)).OrderBy(v => v.ImoNumber).ThenBy(v => v.Year);
                 

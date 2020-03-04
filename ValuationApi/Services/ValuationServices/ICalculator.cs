@@ -6,8 +6,8 @@ using ValuationApi.Model;
 
 namespace ValuationApi.Services.ValuationServices
 {
-    public interface IValuator
+    public interface ICalculator
     {
-        List<Valuation> Valuate(Vessel vessel, IEnumerable<TimeSeries> timeSeries);
+        List<Valuation> CalculateValuation(Vessel vessel, IEnumerable<TimeSeries> timeSeries);
     }
 }
