@@ -14,6 +14,9 @@ Restore packages manually using Visual Studio
   select Allow NuGet to download missing packages. In Solution Explorer, right click the solution and select Restore NuGet Packages.
 
 -----------------------------------------------------------------------------------------------------------------------------------
+I use MicrosoftEntityFrameworkCore --> UseInMemoryDatabase
+I seed  InMemory database with test data.
+
 I assume that in UI more than one vessels are selected, all selected vessels are active(Beacuse we show active vessells to user) 
 and built before 2020.
                 
