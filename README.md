@@ -17,6 +17,7 @@ Restore packages manually using Visual Studio
 I use MicrosoftEntityFrameworkCore --> UseInMemoryDatabase
 I seed  InMemory database with test data.
 
+I wanted to developed UI but i didn't begin since i thought i wouldn't finish on time.
 I assume that more than one vessels are selected in in UI, all selected vessels are active(Beacuse we show active vessells to user) 
 and built before 2020.
                 
